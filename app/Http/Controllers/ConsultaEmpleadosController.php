@@ -8,11 +8,21 @@ use App\Models\Cargo;
 use Redirect;
 use Session;
 use Carbon\Carbon;
-use App\Clases\Funciones;
 use Illuminate\Support\Facades\DB;
 
 class ConsultaEmpleadosController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -43,8 +53,6 @@ class ConsultaEmpleadosController extends Controller
      */
     public function store(Request $request)
     {
-        $objFun = new Funciones();
-
         $filtro = $request->filtro;
         $edad_inicio = intval($request->edad_inicio);
         $edad_final = intval($request->edad_final);

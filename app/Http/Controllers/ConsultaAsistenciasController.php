@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Empleado;
+use App\Models\ControlAsistencia;
+use Redirect;
+use Session;
+use Carbon\Carbon;
 
 class ConsultaAsistenciasController extends Controller
 {
@@ -12,8 +17,11 @@ class ConsultaAsistenciasController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {   
+        $date = Carbon::now();
+        $fecha_actual = $date->format('Y-m-d');
+        $control_asistencias = ControlAsistencia::orderBy('fecha_ingreso','ASC')->get();
+        return view('control_asistencias.search',['control_asistencias' => $control_asistencias,'fecha_actual' => $fecha_actual]);
     }
 
     /**
@@ -34,7 +42,19 @@ class ConsultaAsistenciasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $fecha_inicial = $request->fecha_desde;
+        $fecha_final = $request->fecha_hasta;
+        $date = Carbon::now();
+        $fecha_actual = $date->format('Y-m-d');
+
+        if (strlen($fecha_inicial) == 0 || strlen($fecha_final) == 0) {
+            $msgError = "Por Favor Ingresar una Fecha Desde y una Fecha Hasta para Continuar con la Consulta";
+            Session::flash('error',$msgError);
+            return redirect('/consultaasistencias');
+        }else {
+            $control_asistencias = ControlAsistencia::whereBetween('fecha_ingreso',[$fecha_inicial,$fecha_final])->orderBy('fecha_ingreso','ASC')->get();
+            return view('control_asistencias.search',['control_asistencias' => $control_asistencias,'fecha_actual' => $fecha_actual]);
+        }
     }
 
     /**
