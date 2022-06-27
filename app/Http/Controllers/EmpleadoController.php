@@ -65,6 +65,7 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
+        /** Reglas para que los datos que se ingresen por formulario concuerden con la base de datos */
         $rules = [
             'nombres'       => 'required|string|max:60',
             'apellidos'     => 'required|string|max:60',
@@ -74,14 +75,20 @@ class EmpleadoController extends Controller
             'nocelular'     => 'required|unique:empleados',
         ];
 
+        /** Validator ejecuta las reglas establecidas contra los datos */
         $validator = Validator::make($request->all(),$rules);
             
+        /** Validacion para determinar si fallo alguna regla y retorne el error al formulario de actualizacion */
         if ($validator->fails()) {
             return redirect('/empleados/create')->withErrors($validator)->withInput();
         }
 
+        /** Objeto de clase para usar como un lower case en los datos de texto para que los registre 
+         * con la primera letra en mayusculas por frase
+         */
         $objFun = new Funciones();
-            
+        
+        /** Objeto para registrar al empleado */
         $obj_empleado = [
             'nombres'       => $objFun->titleCase($request->nombres),
             'apellidos'     => $objFun->titleCase($request->apellidos),
@@ -91,8 +98,10 @@ class EmpleadoController extends Controller
             'nocelular'     => $request->nocelular,
         ];
 
+        /** Objeto con el nuevo registro de empleado */
         $empleado_new = Empleado::create($obj_empleado);
 
+        /** Validacion para retornar mensaje de confirmacion del registro */
         $msgSuccess = "Empleado Registrado ($empleado_new->id) Exitosamente!.";
         if ($empleado_new->id){
             Session::flash('success',$msgSuccess);
@@ -108,8 +117,13 @@ class EmpleadoController extends Controller
      */
     public function show($id)
     {
+        /** Se crea objeto con la del modelo Empleado con la funcion find para ubicar el registro a actualizar */
         $empleado = Empleado::find($id);
+        
+        /** Se crea objeto con la del modelo Cargo con la funcion find para ubicar el registro a actualizar */
         $cargos = Cargo::all();
+        
+        /** Retorno vista donde se veran los datos para su actualizacion */
         return view('empleados.update',['empleado' => $empleado,'cargos' => $cargos]);
     }
 
@@ -133,6 +147,7 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        /** Reglas contra las que se validara los datos ingresaros por el formulario */
         $rules = [
             'nombres'       => 'required|string|max:60',
             'apellidos'     => 'required|string|max:60',
@@ -140,6 +155,7 @@ class EmpleadoController extends Controller
             'cargo_id'      => 'required|exists:App\Models\Cargo,id',
         ];
 
+        /** Validator ejecuta las reglas establecidas contra los datos */
         $validator = Validator::make($request->all(),$rules);
             
         if ($validator->fails()) {
@@ -148,7 +164,10 @@ class EmpleadoController extends Controller
 
         $objFun = new Funciones();
         $empleado = Empleado::find($id);
-       
+        
+        /**se crea objeto del registro a actualizar teniendo en cuenta que paso todas las reglas de 
+         * establecidas al inicio del proceso para commit
+        */
         $empleado->nombres       = $objFun->titleCase($request->nombres);
         $empleado->apellidos     = $objFun->titleCase($request->apellidos);
         $empleado->edad          = $request->edad;
@@ -159,6 +178,7 @@ class EmpleadoController extends Controller
         
         $msgSuccess = "Empleado Actualizado ($empleado->id) Exitosamente!.";
         
+        /** Retorno a la vista inicial donde se refleja un mensaje informando que se actualizo el registro  */
         Session::flash('success',$msgSuccess);
         return redirect('/empleados');
     }

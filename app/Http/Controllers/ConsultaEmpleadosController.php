@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+/** Modelos para transacciones a la base de datos */
 use App\Models\Empleado;
 use App\Models\Cargo;
+/** Librerias nativas para redireccion, session y uso de fechas y horas */
 use Redirect;
 use Session;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class ConsultaEmpleadosController extends Controller
 {
@@ -30,7 +33,10 @@ class ConsultaEmpleadosController extends Controller
      */
     public function index()
     {
+        /** Consulta a la base de datos obteniendo los empleados en ordenamiento ascendente por nombre */
         $empleados = Empleado::orderBy('nombres','ASC')->get();
+        
+        /** Consulta a la base de datos obteniendo los los cargos para el filtro */
         $cargos = Cargo::all();
         return view('empleados.search',['empleados' => $empleados,'cargos' => $cargos]);
     }
@@ -53,30 +59,45 @@ class ConsultaEmpleadosController extends Controller
      */
     public function store(Request $request)
     {
+     
+        /**
+         * Con el fin de poder usar los filtros que se encuentran en la vista search se usa la funcion
+         * Store para filtrar y volver a la Vista inicial con los datos ya filtrados
+         */
+
+        /** se obtienen las fechas del formulario filtro */
         $filtro = $request->filtro;
         $edad_inicio = intval($request->edad_inicio);
         $edad_final = intval($request->edad_final);
         $cargo_id = $request->cargo_id;
+
+        /** Consulta a la base de datos obteniendo los los cargos para el filtro */
         $cargos = Cargo::all();
 
+        /** validacion para solicitar los filtros obligatorios dependiendo de si es EDADES o CARGO */
         if($filtro == "EDADES"){
+            /** Validacion de que se envien las edades si se usa este filtro */
             if (strlen($edad_inicio) == 0 && strlen($edad_final) == 0) {
                 $msgError = "Para el Filtro de Edades por Favor Ingresar la Edad de Inicio y Edad Hasta para Continuar con la Consulta";
                 Session::flash('error',$msgError);
                 return redirect('/consultaempleados');
             }else {
+                /** Retorno de Datos segun el filtro */
                 $empleados1 = Empleado::whereBetween('edad',[$edad_inicio,$edad_final])->orderBy('edad','ASC')->get();
                 $msgSuccess = "Registros Encontrados para el Filtro Edades con el Rango de ($edad_inicio -> $edad_final)";
                 Session::flash('success',$msgSuccess);
                 return view('empleados.search',['empleados' => $empleados1,'cargos' => $cargos]);
             }
         }
+        /** Validacion para cuando se usa el filtro de CARGO */
         else if ($filtro == "CARGO") {
+            /** Validacion para cuando se escoge el filtro CARGO pero no lo seleccionan */
             if (strlen($cargo_id) == 0) {
                 $msgError = "Por Favor Seleccionar un Cargo para Poder Consultar los Registros";
                 Session::flash('error',$msgError);
                 return redirect('/consultaempleados');
             }else {
+                /** Retorno de Datos segun el filtro */
                 $cargo_filtro = Cargo::find($cargo_id);
                 $empleados = Empleado::where('cargo_id',$cargo_id)->orderBy('nombres','ASC')->get();
                 $msgSuccess = "Registros Encontrados para el Filtro Cargo ($cargo_filtro->cargo_nombre)";
@@ -85,6 +106,7 @@ class ConsultaEmpleadosController extends Controller
             }
         }
         else {
+            /** retorno de error cuando no se seleccionan ninguno de los filtros */
             $msgError =  "Por Favor Seleccione el Tipo de Filtro para Continuar con la Consulta";
             Session::flash('error',$msgError);
             return redirect('/consultaempleados');
