@@ -33,3 +33,15 @@ Route::resource('/empleados',App\Http\Controllers\EmpleadoController::class);
 Route::get('/control-asistencias',[App\Http\Controllers\ControlAsistenciaController::class,'index']);
 // Ruta Save
 Route::post('/control-asistencias/save',[App\Http\Controllers\ControlAsistenciaController::class,'save']);
+// Ruta getcontrol/1
+Route::get('/control-asistencias/getcontrol/{id}',[App\Http\Controllers\ControlAsistenciaController::class,'getcontrol']);
+// Ruta update/1
+Route::post('/control-asistencias/setcontrol/update',[App\Http\Controllers\ControlAsistenciaController::class,'setcontrol']);
+
+// Rutas para el control de sistencias
+Route::resource('/controlasistencias',App\Http\Controllers\Control_asistenciaController::class);
+
+//Consulta Empleados
+Route::resource('/consultaempleados',App\Http\Controllers\ConsultaEmpleadosController::class);
+//Consulta Asistencias
+Route::resource('/consultaasistencias',App\Http\Controllers\ConsultaAsistenciasController::class);

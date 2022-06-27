@@ -58,14 +58,21 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 Gestion de Asistencias
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('/empleados') }}">
-                                        Empleados
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url('/control-asistencias') }}">
-                                        Control Asistencia
-                                    </a>
-                                </div>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ url('/empleados') }}">Empleados</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ url('/controlasistencias') }}">Control de Asistencia</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Consultas
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ url('/consultaempleados') }}">Consultar Empleados</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ url('/consultaasistencias') }}">Consultar Control de Asistencia</a></li>
+                                </ul>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -97,4 +104,16 @@
 </body>
 <script src="{{ url('js/jquery-3.5.1.js') }}"></script>
 <script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $(function() {
+        var $j = jQuery.noConflict(); // Para evitar conflictos con las versiones de JQuery
+        $j(".fecha").datepicker({ dateFormat: "yy-mm-dd" });
+    });
+</script>
+
 </html>

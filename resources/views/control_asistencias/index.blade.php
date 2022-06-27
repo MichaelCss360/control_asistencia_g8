@@ -23,7 +23,7 @@
                 @endif 
                 <div class="card-header">Control de Asistencia</div>
                 <div class="card-body">
-                    <form action="{{ url('/control-asistencias/save') }}" method="POST">
+                    <form action="{{ url('/controlasistencias') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col">
@@ -87,7 +87,7 @@
                                         <td>{{ $conasi->hora_ingreso }}</td>
                                         <td>{{ $conasi->salida }}</td>
                                         <td>{{ $conasi->hora_salida }}</td>
-                                        <td><a class="btn btn-info" href="{{ url('/control-asistencias/update') }}/{{ $conasi->id }}"><i class="bi bi-pencil-square" role="img" aria-label="GitHub"></a></td>
+                                        <td><a class="btn btn-info" href="{{ url('/controlasistencias') }}/{{ $conasi->id }}"><i class="bi bi-pencil-square" role="img" aria-label="GitHub"></a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
