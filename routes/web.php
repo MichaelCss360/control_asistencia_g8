@@ -25,3 +25,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // de empleados por medio de un controlador asociado a un modelo 
 Route::resource('/empleados',App\Http\Controllers\EmpleadoController::class);
 
+/**
+ * Rutas para el control de asistencias
+ */
+
+// Ruta Index
+Route::get('/control-asistencias',[App\Http\Controllers\ControlAsistenciaController::class,'index']);
+// Ruta Save
+Route::post('/control-asistencias/save',[App\Http\Controllers\ControlAsistenciaController::class,'save']);

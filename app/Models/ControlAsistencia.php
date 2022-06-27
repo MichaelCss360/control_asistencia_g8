@@ -18,7 +18,7 @@ class ControlAsistencia extends Model
      *
      * @var string
      */
-    protected $table = 'empleados';
+    protected $table = 'control_asistencias';
 
     /**
      * Campos de la tabla Control Asistencias.
@@ -28,7 +28,9 @@ class ControlAsistencia extends Model
     protected $fillable = [
         'empleado_id',
         'fecha_ingreso',
+        'tipo_control',
         'hora_ingreso',
+        'hora_salida',
     ];
 
     public function Empleado()

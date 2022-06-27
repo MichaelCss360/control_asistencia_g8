@@ -25,7 +25,7 @@ class CreateControlAsistenciasTable extends Migration
             $table->string('tipo_control',20);
             $table->date('fecha_ingreso');
             $table->time('hora_ingreso');
-            $table->time('hora_salida');
+            $table->time('hora_salida')->nullable();
 
             $table->timestamps();
         });

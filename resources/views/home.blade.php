@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    Bienvenido a Control Asistencia
                 </div>
             </div>
         </div>

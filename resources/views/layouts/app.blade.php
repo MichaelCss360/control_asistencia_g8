@@ -62,6 +62,9 @@
                                     <a class="dropdown-item" href="{{ url('/empleados') }}">
                                         Empleados
                                     </a>
+                                    <a class="dropdown-item" href="{{ url('/control-asistencias') }}">
+                                        Control Asistencia
+                                    </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

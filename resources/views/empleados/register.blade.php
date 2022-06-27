@@ -82,7 +82,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Cedula">
+                                        <input type="number" class="form-control" id="cedula" name="cedula" placeholder="Cedula">
                                         <label for="cedula">Cedula</label>
                                     </div>
                                     @if ($errors->has('cedula'))
@@ -97,7 +97,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="nocelular" name="nocelular" placeholder="Celular">
+                                        <input type="number" class="form-control" id="nocelular" name="nocelular" placeholder="Celular">
                                         <label for="nocelular">Celular</label>
                                     </div>
                                     @if ($errors->has('nocelular'))
