@@ -5,7 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
             <div class="card">
-                
+                @if(Session::has('success'))
+                    <div class="col-md">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Confirmacion:</strong> {{ Session::get('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                @endif  
                 <div class="card-header">Gestion Empleados</div>
                 <div class="card-body">
                     <table class="table">

@@ -37,7 +37,7 @@ class EmpleadoController extends Controller
      */
     public function create()
     {
-        //Objeti de clase empleado obteniendo todos los cargos
+        //Objeto de clase empleado obteniendo todos los cargos
         $cargos = Cargo::all();
         /**
          * Retorno a la vista con el objeto de $empleados
@@ -59,8 +59,8 @@ class EmpleadoController extends Controller
             'apellidos'     => 'required|string|max:60',
             'edad'          => 'required|numeric',
             'cargo_id'      => 'required|exists:App\Models\Cargo,id',
-            'cedula'        => 'required|string',
-            'nocelular'     => 'required',
+            'cedula'        => 'required|unique:empleados|string',
+            'nocelular'     => 'required|unique:empleados',
         ];
 
         $validator = Validator::make($request->all(),$rules);
@@ -97,7 +97,9 @@ class EmpleadoController extends Controller
      */
     public function show($id)
     {
-        echo "1";
+        $empleado = Empleado::find($id);
+        $cargos = Cargo::all();
+        return view('empleados.update',['empleado' => $empleado,'cargos' => $cargos]);
     }
 
     /**
@@ -120,7 +122,34 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'nombres'       => 'required|string|max:60',
+            'apellidos'     => 'required|string|max:60',
+            'edad'          => 'required|numeric',
+            'cargo_id'      => 'required|exists:App\Models\Cargo,id',
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+            
+        if ($validator->fails()) {
+            return redirect('/empleados/create')->withErrors($validator)->withInput();
+        }
+
+        $objFun = new Funciones();
+        $empleado = Empleado::find($id);
+       
+        $empleado->nombres       = $objFun->titleCase($request->nombres);
+        $empleado->apellidos     = $objFun->titleCase($request->apellidos);
+        $empleado->edad          = $request->edad;
+        $empleado->cargo_id      = $request->cargo_id;
+        $empleado->cedula        = $request->cedula;
+        $empleado->nocelular     = $request->nocelular;
+        $empleado->save();
+        
+        $msgSuccess = "Empleado Actualizado ($empleado->id) Exitosamente!.";
+        
+        Session::flash('success',$msgSuccess);
+        return redirect('/empleados');
     }
 
     /**

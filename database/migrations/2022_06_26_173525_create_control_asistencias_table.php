@@ -22,8 +22,10 @@ class CreateControlAsistenciasTable extends Migration
             $table->foreign('empleado_id')->references('id')->on('empleados');
             
             //fecha y hora de ingreso
+            $table->string('tipo_control',20);
             $table->date('fecha_ingreso');
             $table->time('hora_ingreso');
+            $table->time('hora_salida');
 
             $table->timestamps();
         });

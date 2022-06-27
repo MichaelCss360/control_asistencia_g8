@@ -4,16 +4,17 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10 text-center">
-            <form action="{{ url('/empleados') }}" method="POST">
+            <form action="{{ url('/empleados') }}/{{ $empleado->id }}" method="POST">
+                {{ method_field('PUT') }}
                 @csrf
                 <div class="card">
-                    <div class="card-header">Gestion Empleados - Registro</div>
+                    <div class="card-header">Gestion Empleados - Actualizacion</div>
                     <div class="card-body">
                         <div class="form-group" >
                             <div class="row">
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres">
+                                        <input type="text" class="form-control" value="{{ $empleado->nombres }}" id="nombres" name="nombres" placeholder="Nombres">
                                         <label for="nombres">Nombres</label>
                                     </div>
                                     @if ($errors->has('nombres'))
@@ -28,7 +29,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos">
+                                        <input type="text" class="form-control" id="apellidos" value="{{ $empleado->apellidos }}" name="apellidos" placeholder="Apellidos">
                                         <label for="apellidos">Apellidos</label>
                                     </div>
                                     @if ($errors->has('apellidos'))
@@ -45,7 +46,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="edad" name="edad" placeholder="Edad">
+                                        <input type="number" class="form-control" id="edad" name="edad" value="{{ $empleado->edad }}" placeholder="Edad">
                                         <label for="edad">Edad</label>
                                     </div>
                                     @if ($errors->has('edad'))
@@ -63,7 +64,12 @@
                                         <select class="form-control" name="cargo_id" id="cargo_id">
                                             <option value="">Seleccione el Cargo</option>
                                             @foreach ($cargos as $car)
-                                                <option value="{{ $car->id }}">{{ $car->cargo_nombre }}</option>
+                                                @if($empleado->cargo_id == $car->id)
+                                                    <option selected value="{{ $car->id }}">{{ $car->cargo_nombre }}</option>
+                                                @else
+                                                    <option value="{{ $car->id }}">{{ $car->cargo_nombre }}</option>
+                                                @endif
+                                                
                                             @endforeach
                                         </select>
                                         <label for="cargo_id">Cargo</label>
@@ -82,7 +88,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Cedula">
+                                        <input type="text" class="form-control" id="cedula" name="cedula" value="{{ $empleado->cedula }}" placeholder="Cedula">
                                         <label for="cedula">Cedula</label>
                                     </div>
                                     @if ($errors->has('cedula'))
@@ -97,7 +103,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="nocelular" name="nocelular" placeholder="Celular">
+                                        <input type="text" class="form-control" id="nocelular" name="nocelular" value="{{ $empleado->nocelular }}" placeholder="Celular">
                                         <label for="nocelular">Celular</label>
                                     </div>
                                     @if ($errors->has('nocelular'))
@@ -115,7 +121,6 @@
                     </div>
                     <div class="card-footer">
                         <a href="{{ url('/empleados') }}" class="btn btn-danger">CANCELAR</a>
-                        <button type="reset" class="btn btn-primary">LIMPIAR</button>
                         <button type="submit" class="btn btn-success">GRABAR</button>
                     </div>
                 </div>
